@@ -1,22 +1,44 @@
 <template>
   <section class="hero">
+    <div class="hero__video">
+      <div class="hero__video-overlay"></div>
+      <video
+          src="@/assets/movies/main-movie.mp4"
+          muted
+          controls
+          autoplay
+          playsinline
+          loop
+      />
+    </div>
     <div class="hero__content">
-      <h1 class="hero__title">Empower Your Ideas with Code</h1>
+      <h1 class="hero__title">
+        {{ t("landing.hero_title") }}
+      </h1>
       <p class="hero__subtitle">
-        Build scalable apps faster with modern tools and a powerful workflow.
+        {{ t("landing.hero_description") }}
       </p>
       <v-btn
+          @click="handleAuthRedirect"
           color="surface"
           size="large"
       >
-        Get Started
+        {{ t("common.get_started") }}
       </v-btn>
     </div>
   </section>
 </template>
 
-<script setup lang="ts">
+<script setup>
+  import {useI18n} from "vue-i18n";
+  import {useRouter} from "vue-router";
 
+  const {t} = useI18n();
+  const router = useRouter();
+
+  const handleAuthRedirect = () => {
+    router.push({name: "UserRegister"});
+  }
 </script>
 
 <style scoped lang="scss">
@@ -32,8 +54,43 @@
   position: relative;
 
   &__content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     max-width: 700px;
-    z-index: 1;
+    z-index: 4;
+  }
+
+  &__video {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    max-height: 100vh;
+    min-height: 100vh;
+    z-index: 2;
+
+    &-overlay {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      background-color: rgba(44, 62, 80, 0.6);
+      width: 100%;
+      max-height: 100vh;
+      min-height: 100vh;
+      z-index: 3;
+    }
+
+    video {
+      width: 100%;
+      object-fit: cover;
+      height: 100%;
+    }
   }
 
   &__title {

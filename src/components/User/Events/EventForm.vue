@@ -94,29 +94,17 @@
   </v-form>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
 import { ref, reactive } from "vue"
 import { useVuelidate } from "@vuelidate/core"
 import { required, minLength, numeric } from "@vuelidate/validators"
 import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet"
-import {GeocoderService} from "@/core/services/geocoder.service.ts";
-
-interface CreateEventForm {
-  title: string
-  description: string
-  format: "онлайн" | "оффлайн" | ""
-  location: string
-  event_category_id: string
-  latitude: number | null
-  longitude: number | null
-  startTime: string
-  endTime: string
-}
+import {GeocoderService} from "@/core/services/geocoder.service.js";
 
 const geocoderService = new GeocoderService();
 
 const formRef = ref()
-const form = reactive<CreateEventForm>({
+const form = reactive({
   title: "",
   description: "",
   format: "",
@@ -149,10 +137,10 @@ const categoryOptions = ref([
 ])
 
 const zoom = ref(13)
-const center = ref<[number, number]>([40.1792, 44.4991]) // Yerevan
+const center = ref([40.1792, 44.4991]) // Yerevan
 
-const onMapClick = async (e: any) => {
-  const { lat, lng } = e.latlng;
+const onMapClick = async (event) => {
+  const { lat, lng } = event.latlng;
   form.latitude = lat;
   form.longitude = lng;
   try {

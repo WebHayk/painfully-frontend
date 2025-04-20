@@ -1,15 +1,16 @@
-@import "fonts";
+@import "textfield";
+@import "button";
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 html, body {
-  font-family: "Noto Sans", sans-serif;
   font-size: 16px;
-  color: #000;
+  color: #2C3E50;
   height: 100%;
   overflow-x: hidden;
 }
@@ -17,3 +18,4 @@ html, body {
 #app {
   height: 100%;
 }
+

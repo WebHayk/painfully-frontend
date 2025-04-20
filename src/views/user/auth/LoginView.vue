@@ -1,6 +1,11 @@
 <template>
   <AuthorizationWrapper page-key="login">
     <v-form @submit.prevent="submitForm">
+      <RoleSwitcher
+          :model-value="form.role"
+          @update:modelValue="handleUpdate"
+      />
+
       <v-text-field
           hide-details="auto"
           variant="outlined"
@@ -20,8 +25,19 @@
           v-model="form.password"
           label="Пароль"
           placeholder="Введите свой пароль"
+          :type="showPassword ? 'text' : 'password'"
           :error-messages="v$.password.$pending ? [] : v$.password.$errors.map(e => e.$message)"
-      />
+      >
+        <template #append-inner>
+          <div
+              class="d-flex align-center cursor-pointer"
+              @click="togglePasswordVisibility"
+          >
+            <EyeIcon v-if="!showPassword"/>
+            <EyeOffIcon v-else/>
+          </div>
+        </template>
+      </v-text-field>
 
       <v-btn
           class="submit-btn"
@@ -49,35 +65,62 @@
   </AuthorizationWrapper>
 </template>
 
-<script setup lang="ts">
-import {ref} from 'vue';
+<script setup>
+import {ref} from "vue";
 import useVuelidate from "@vuelidate/core";
-import {required, email, minLength} from "@vuelidate/validators";
+import {required, email, minLength, helpers} from "@vuelidate/validators";
 import AuthorizationWrapper from "@/components/common/AuthorizationWrapper.vue";
 import {useRouter} from "vue-router";
+import EyeOffIcon from "@/assets/icons/EyeOffIcon.vue";
+import EyeIcon from "@/assets/icons/EyeIcon.vue";
+import RoleSwitcher from "@/components/User/Auth/RoleSwitcher.vue";
+import {ROLES} from "@/core/variables/index.js";
+import {useStore} from "vuex";
 
 const router = useRouter();
+const store = useStore();
 
 const validations = {
-  email: {required, email},
-  password: {required, minLength: minLength(6)}
+  email: {
+    required: helpers.withMessage("Обязательное поле", required),
+    email: helpers.withMessage("Неверный формат электронной почты", email)
+  },
+  password: {
+    required: helpers.withMessage("Обязательное поле", required),
+    minLength: helpers.withMessage("Поле должно содержать не менее 6 символов", minLength(6))
+  }
 };
 
 const form = ref({
   email: "",
   password: "",
+  role: ROLES.MEMBER
 });
+
+const showPassword = ref(false);
 
 const v$ = useVuelidate(validations, form);
 
-const submitForm = () => {
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value;
+};
+
+const handleUpdate = async (value) => {
+  form.value.role = value;
+};
+
+const submitForm = async () => {
   v$.value.$touch();
+
   if (v$.value.$invalid) {
-    console.log('Form is invalid!');
     return;
   }
 
-  console.log('Form submitted:', form.value);
+  try {
+    await store.dispatch("auth/login", form.value);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const handleRegister = () => {

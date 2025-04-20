@@ -1,0 +1,27 @@
+.v-input {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 16px;
+  border-radius: 10px;
+
+  .v-field {
+    border-radius: 10px;
+
+    &:hover {
+      border-color: #bdbdbd;
+    }
+
+    &--focused {
+      border-color: #1976d2;
+    }
+  }
+
+  .v-label {
+    color: #555;
+    font-weight: 500;
+  }
+
+  input {
+    color: #333;
+    padding: 12px;
+  }
+}

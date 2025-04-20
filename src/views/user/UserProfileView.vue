@@ -51,7 +51,7 @@
                       color="primary"
                   >
                     <v-icon left>
-                      <EyeIcon fill="#93755e"/>
+                      <EyeIcon />
                     </v-icon>
                   </v-btn>
                 </template>
@@ -80,7 +80,7 @@
   </v-container>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
 import {ref} from 'vue';
 import EventItem from "@/components/User/Events/EventItem.vue";
 import {VCheckbox} from "vuetify/components";

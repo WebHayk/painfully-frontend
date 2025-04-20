@@ -1,5 +1,5 @@
 export class GeocoderService {
-    fetchAddressFromCoords = async (lat: number, lng: number) => {
+    fetchAddressFromCoords = async (lat, lng) => {
         try {
             const response = await fetch(
                 `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`

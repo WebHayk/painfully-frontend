@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup >
 import "leaflet/dist/leaflet.css";
 import {ref} from "vue";
 import EventForm from "@/components/User/Events/EventForm.vue";

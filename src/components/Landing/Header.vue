@@ -1,18 +1,29 @@
 <template>
   <header class="header">
     <div class="container">
-      <div class="logo">
-        Logo
+      <div class="logo cursor-pointer">
+        <img
+            loading="lazy"
+            width="100"
+            alt="logo"
+            height="75"
+            src="@/assets/images/logo.svg"
+        />
       </div>
 
       <nav class="nav" :class="{ open: isMenuOpen }">
         <ul>
-          <li><a href="#courses">Courses</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#blog">Blog</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li v-for="(link) in tm('landing.header')">
+            <a @click.prevent="scrollToSection(link)">{{ link }}</a>
+          </li>
         </ul>
-        <v-btn @click="handleLoginRedirect" color="primary" class="hero__cta">Get Started</v-btn>
+        <v-btn
+            @click="handleLoginRedirect"
+            color="primary"
+            class="hero__cta"
+        >
+          {{ t("common.get_started") }}
+        </v-btn>
       </nav>
 
       <v-btn
@@ -26,17 +37,27 @@
   </header>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from "vue";
 import {useRouter} from "vue-router";
+import {useI18n} from "vue-i18n";
 
 const router = useRouter();
+const { tm, t } = useI18n();
 
 const isMenuOpen = ref(false);
 
 const handleLoginRedirect = () => {
-  router.push({name: "UserLogin"});
+  router.push({name: "UserRegister"});
 }
+
+const scrollToSection = (sectionId) => {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+    isMenuOpen.value = false;
+  }
+};
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
@@ -75,13 +96,14 @@ const toggleMenu = () => {
       margin: 0;
 
       li a {
+        cursor: pointer;
         text-decoration: none;
         color: #333333;
         font-weight: 500;
-        transition: color 0.3s;
+        transition: opacity 0.3s;
 
         &:hover {
-          color: #93755e;
+          opacity: .75;
         }
       }
     }

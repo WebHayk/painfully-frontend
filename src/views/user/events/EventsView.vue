@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup >
 import EventItem from "@/components/User/Events/EventItem.vue";
 import {useRouter} from "vue-router";
 

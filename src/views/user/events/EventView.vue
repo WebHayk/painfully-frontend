@@ -57,22 +57,13 @@
   </v-container>
 </template>
 
-<script lang="ts" setup>
-import { useRouter } from 'vue-router'
-import { computed, defineProps, ref } from 'vue'
+<script setup>
+import { useRouter } from "vue-router";
+import { computed, defineProps, ref } from "vue";
 
-interface EventItem {
-  id: number
-  title: string
-  description: string
-  date: string | Date
-  image?: string
-  category?: string
-}
-
-const props = defineProps<{
-  event: EventItem
-}>()
+const props = defineProps({
+  event: Object
+});
 
 const router = useRouter()
 const joining = ref(false)

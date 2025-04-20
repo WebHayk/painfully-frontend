@@ -16,7 +16,7 @@
         {{ event.title }}
       </v-list-item-title>
 
-      <v-list-item-subtitle class="text-body-2 text-grey-darken-1">
+      <v-list-item-subtitle class="text-body-2 text-text-secondary">
         {{ formattedDate }}
       </v-list-item-subtitle>
 
@@ -24,14 +24,14 @@
         <v-tooltip text="Открыть мероприятие">
           <template v-slot:activator="{ props }">
             <v-btn v-bind="props" icon @click="onMore">
-              <RedirectIcon fill="#93755e"/>
+              <RedirectIcon/>
             </v-btn>
           </template>
         </v-tooltip>
       </template>
     </v-list-item>
 
-    <v-card-text class="pt-0 text-body-2 text-grey-darken-2">
+    <v-card-text class="pt-0 text-body-2 text-text-primary">
       {{ event.description }}
     </v-card-text>
 
@@ -48,27 +48,16 @@
   </v-card>
 </template>
 
-<script lang="ts" setup>
+<script  setup>
 import {computed, defineProps, defineEmits} from "vue";
 import RedirectIcon from "@/assets/icons/RedirectIcon.vue";
 import {useRouter} from "vue-router";
 
-interface EventItem {
-  id: string
-  title: string
-  description: string
-  date: string | Date
-  image?: string
-  category?: string
-}
+const props = defineProps({
+  event: Object
+});
 
-const props = defineProps<{
-  event: EventItem
-}>()
-
-const emit = defineEmits<{
-  (e: 'hover', id: string | null): void
-}>();
+const emit = defineEmits(["hover"]);
 
 const router = useRouter();
 

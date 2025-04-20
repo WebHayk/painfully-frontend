@@ -16,8 +16,8 @@
     </v-navigation-drawer>
 
     <v-app-bar elevation="0" app>
-      <v-toolbar-title>
-        {{ $t(`routes.${pageTitle}`) }}
+      <v-toolbar-title v-if="pageTitle">
+        {{ t(pageTitle) }}
       </v-toolbar-title>
 
       <v-spacer/>
@@ -25,7 +25,7 @@
       <HeaderProfile />
     </v-app-bar>
 
-    <v-main class="bg-grey-lighten-4">
+    <v-main class="bg-background">
       <v-container fluid class="py-4 h-100">
         <router-view/>
       </v-container>
@@ -33,17 +33,23 @@
   </v-app>
 </template>
 
-<script setup lang="ts">
+<script setup >
 import {useRoute} from 'vue-router'
 import {computed} from "vue";
 import HeaderProfile from "@/components/common/HeaderProfile.vue";
+import {useI18n} from "vue-i18n";
 
 const route = useRoute();
+const {t, te} = useI18n();
 
-const navItems = [{title: 'Мероприятия', icon: 'mdi-account-group', to: '/user/events'}
-];
+const navItems = [{title: 'Мероприятия', icon: 'mdi-account-group', to: '/user/events'}];
 
 const pageTitle = computed(() => {
-  return route.meta.titleKey;
+  let value = `routes.${route.meta.titleKey}`;
+  if (te(value)) {
+    return t(value);
+  }
 });
+
+
 </script>
